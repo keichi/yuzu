@@ -29,4 +29,4 @@ jobs:
         poetry run flake8 --count --statistics yuzu
     - name: Type check with mypy
       run: |
-        poetry run mypy -m yuzu
+        poetry run mypy -p yuzu
