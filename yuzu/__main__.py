@@ -9,7 +9,7 @@ GS_DEF = {
         "/work/keichi/adiosvm/Tutorial/gray-scott/gray-scott",
         "settings-staging.json"
     ],
-    "cwd": "/work/keichi/elastic-workflow"
+    "cwd": "/work/keichi/yuzu"
 }
 
 PDF_DEF = {
@@ -19,7 +19,7 @@ PDF_DEF = {
         "/work/keichi/adiosvm/Tutorial/gray-scott/pdf_calc",
         "gs.bp", "pdf.bp"
     ],
-    "cwd": "/work/keichi/elastic-workflow"
+    "cwd": "/work/keichi/yuzu"
 }
 
 

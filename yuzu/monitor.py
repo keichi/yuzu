@@ -10,11 +10,11 @@ from .application import Application
 class Monitor:
     def __init__(self, hosts: List[str]):
         self.host_pool: Set[str] = set(hosts)
-        self.apps: List[Application] = []
-        self.threads: List[threading.Thread] = []
+        self.apps: Dict[str, Application] = {}
+        self.threads: Dict[str, threading.Thread] = {}
 
     def launch(self, app_def: Dict) -> None:
-        """ Launch application from a definition """
+        """ Launch an application from a definition """
 
         app = Application(app_def)
 
@@ -45,14 +45,15 @@ class Monitor:
         app.proc = subprocess.Popen(full_cmd, cwd=app.cwd, env=env,
                                     stdout=subprocess.PIPE, text=True)
 
+        self.apps[app.name] = app
+
         # Launch shephered thread for this app
         thread = threading.Thread(target=self._shepherd, args=(app,))
+        self.threads[app.name] = thread
         thread.start()
 
-        self.threads.append(thread)
-
     def _shepherd(self, app: Application) -> None:
-        """ Monitor and communicate with application """
+        """ Monitor and communicate with an application """
 
         if app.proc is None:
             return
@@ -66,7 +67,7 @@ class Monitor:
         app.proc.wait()
 
     def wait(self) -> None:
-        """ Wait for  all applications to finish"""
+        """ Wait for all applications to finish"""
 
-        for thread in self.threads:
+        for thread in self.threads.values():
             thread.join()

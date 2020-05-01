@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "elastic-workflow"
+name = "yuzu"
 version = "0.1.0"
 description = ""
 authors = ["Keichi Takahashi <keichi.t@me.com>"]
