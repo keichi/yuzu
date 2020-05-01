@@ -4,6 +4,7 @@ from typing import Dict, List, Optional, Set
 
 class Application:
     def __init__(self, app_def: Dict):
+        # TODO Move typings to class body
         self.name: str = app_def["name"]
         self.np: int = app_def["np"]
         self.cmd: List[str] = app_def["cmd"]

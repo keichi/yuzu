@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+service YuzuCollector {
+    rpc ReportTimer(TimerTelemetry) returns (TelemetryReply) {}
+    rpc ReportDataSize(DataSizeTelemetry) returns (TelemetryReply) {}
+}
+
+message Common {
+    string app_name = 1;
+    uint32 step = 2;
+    double elapsed = 3;
+}
+
+enum TimerType {
+    READ_IO = 0;
+    COMPUTE = 1;
+    WRITE_IO = 2;
+}
+
+message TimerTelemetry {
+    Common common = 1;
+    TimerType event_type = 2;
+    double duration = 3;
+}
+
+message DataSizeTelemetry {
+    Common common = 1;
+    uint64 size = 2;
+}
+
+message TelemetryReply {
+}

@@ -37,7 +37,7 @@ class Monitor:
         # These environment variables will be available from the app
         env = os.environ.copy()
         env["APP_NAME"] = app.name
-        env["MASTER"] = os.environ["HOST"]
+        env["MASTER"] = os.environ["HOSTNAME"]
 
         print(f"Launching app {app.name}: {full_cmd}", flush=True)
 

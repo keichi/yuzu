@@ -1,6 +1,14 @@
+import sys
 import os
+from concurrent.futures import ThreadPoolExecutor
+
+import grpc
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from .monitor import Monitor
+from .collector_pb2_grpc import YuzuCollectorServicer
+from .collector_pb2_grpc import add_YuzuCollectorServicer_to_server
 
 GS_DEF = {
     "name": "sim",
@@ -23,10 +31,33 @@ PDF_DEF = {
 }
 
 
+class CollectorServicer(YuzuCollectorServicer):
+    def ReportTimer(self, request, context):
+        pass
+
+    def ReportDataSize(self, request, context):
+        pass
+
+
+def serve():
+    server = grpc.server(ThreadPoolExecutor(max_workers=10))
+    add_YuzuCollectorServicer_to_server(YuzuCollectorServicer(), server)
+
+    print("Starting gRPC server")
+
+    server.add_insecure_port('[::]:50051')
+    server.start()
+
+
 def main() -> None:
     job_id = os.getenv("JOB_ID")
 
     print(f"Starting job ID {job_id}")
+
+    master = os.getenv("HOSTNAME")
+    print(f"Yuzu master is running on {master}")
+
+    serve()
 
     hosts = []
     with open(os.environ["PE_HOSTFILE"]) as f:
