@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x0f\x63ollector.proto\"9\n\x06\x43ommon\x12\x10\n\x08\x61pp_name\x18\x01 \x01(\t\x12\x0c\n\x04step\x18\x02 \x01(\r\x12\x0f\n\x07\x65lapsed\x18\x03 \x01(\x01\"[\n\x0eTimerTelemetry\x12\x17\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x07.Common\x12\x1e\n\nevent_type\x18\x02 \x01(\x0e\x32\n.TimerType\x12\x10\n\x08\x64uration\x18\x03 \x01(\x01\":\n\x11\x44\x61taSizeTelemetry\x12\x17\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x07.Common\x12\x0c\n\x04size\x18\x02 \x01(\x04\"\x10\n\x0eTelemetryReply*3\n\tTimerType\x12\x0b\n\x07READ_IO\x10\x00\x12\x0b\n\x07\x43OMPUTE\x10\x01\x12\x0c\n\x08WRITE_IO\x10\x02\x32{\n\rYuzuCollector\x12\x31\n\x0bReportTimer\x12\x0f.TimerTelemetry\x1a\x0f.TelemetryReply\"\x00\x12\x37\n\x0eReportDataSize\x12\x12.DataSizeTelemetry\x1a\x0f.TelemetryReply\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0f\x63ollector.proto\"9\n\x06\x43ommon\x12\x10\n\x08\x61pp_name\x18\x01 \x01(\t\x12\x0c\n\x04step\x18\x02 \x01(\r\x12\x0f\n\x07\x65lapsed\x18\x03 \x01(\x01\"[\n\x0eTimerTelemetry\x12\x17\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x07.Common\x12\x1e\n\ntimer_type\x18\x02 \x01(\x0e\x32\n.TimerType\x12\x10\n\x08\x64uration\x18\x03 \x01(\x01\":\n\x11\x44\x61taSizeTelemetry\x12\x17\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x07.Common\x12\x0c\n\x04size\x18\x02 \x01(\x04\"\x10\n\x0eTelemetryReply*>\n\tTimerType\x12\x0b\n\x07READ_IO\x10\x00\x12\x0b\n\x07\x43OMPUTE\x10\x01\x12\x0c\n\x08WRITE_IO\x10\x02\x12\t\n\x05TOTAL\x10\x03\x32{\n\rYuzuCollector\x12\x31\n\x0bReportTimer\x12\x0f.TimerTelemetry\x1a\x0f.TelemetryReply\"\x00\x12\x37\n\x0eReportDataSize\x12\x12.DataSizeTelemetry\x1a\x0f.TelemetryReply\"\x00\x62\x06proto3'
 )
 
 _TIMERTYPE = _descriptor.EnumDescriptor(
@@ -40,11 +40,15 @@ _TIMERTYPE = _descriptor.EnumDescriptor(
       name='WRITE_IO', index=2, number=2,
       serialized_options=None,
       type=None),
+    _descriptor.EnumValueDescriptor(
+      name='TOTAL', index=3, number=3,
+      serialized_options=None,
+      type=None),
   ],
   containing_type=None,
   serialized_options=None,
   serialized_start=249,
-  serialized_end=300,
+  serialized_end=311,
 )
 _sym_db.RegisterEnumDescriptor(_TIMERTYPE)
 
@@ -52,6 +56,7 @@ TimerType = enum_type_wrapper.EnumTypeWrapper(_TIMERTYPE)
 READ_IO = 0
 COMPUTE = 1
 WRITE_IO = 2
+TOTAL = 3
 
 
 
@@ -115,7 +120,7 @@ _TIMERTELEMETRY = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='event_type', full_name='TimerTelemetry.event_type', index=1,
+      name='timer_type', full_name='TimerTelemetry.timer_type', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -207,7 +212,7 @@ _TELEMETRYREPLY = _descriptor.Descriptor(
 )
 
 _TIMERTELEMETRY.fields_by_name['common'].message_type = _COMMON
-_TIMERTELEMETRY.fields_by_name['event_type'].enum_type = _TIMERTYPE
+_TIMERTELEMETRY.fields_by_name['timer_type'].enum_type = _TIMERTYPE
 _DATASIZETELEMETRY.fields_by_name['common'].message_type = _COMMON
 DESCRIPTOR.message_types_by_name['Common'] = _COMMON
 DESCRIPTOR.message_types_by_name['TimerTelemetry'] = _TIMERTELEMETRY
@@ -252,8 +257,8 @@ _YUZUCOLLECTOR = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=302,
-  serialized_end=425,
+  serialized_start=313,
+  serialized_end=436,
   methods=[
   _descriptor.MethodDescriptor(
     name='ReportTimer',

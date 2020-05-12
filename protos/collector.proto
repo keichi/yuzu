@@ -15,11 +15,12 @@ enum TimerType {
     READ_IO = 0;
     COMPUTE = 1;
     WRITE_IO = 2;
+    TOTAL = 3;
 }
 
 message TimerTelemetry {
     Common common = 1;
-    TimerType event_type = 2;
+    TimerType timer_type = 2;
     double duration = 3;
 }
 
