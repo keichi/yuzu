@@ -26,7 +26,7 @@ jobs:
         poetry install
     - name: Lint with flake8
       run: |
-        poetry run flake8 --count --statistics yuzu
+        poetry run flake8 --count --statistics --exclude pb yuzu
     - name: Type check with mypy
       run: |
         poetry run mypy -p yuzu

@@ -80,6 +80,19 @@ version = "1.0.2"
 flake8 = "*"
 
 [[package]]
+category = "dev"
+description = "Mypy stubs for gRPC"
+name = "grpc-stubs"
+optional = false
+python-versions = ">=3.6"
+version = "1.24.1"
+
+[package.dependencies]
+grpcio = "*"
+mypy = ">=0.730"
+typing-extensions = "*"
+
+[[package]]
 category = "main"
 description = "HTTP/2-based RPC framework"
 name = "grpcio"
@@ -254,7 +267,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "e828f1167e423603d2e4f7a15aed9dea427a17177ff9ce58643d2ab16b35af8d"
+content-hash = "2411b66865ba2a089693f54effe59c1d37347633288bb7239f98bbf6da28d40f"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -281,6 +294,10 @@ flake8-isort = [
 flake8-polyfill = [
     {file = "flake8-polyfill-1.0.2.tar.gz", hash = "sha256:e44b087597f6da52ec6393a709e7108b2905317d0c0b744cdca6208e670d8eda"},
     {file = "flake8_polyfill-1.0.2-py2.py3-none-any.whl", hash = "sha256:12be6a34ee3ab795b19ca73505e7b55826d5f6ad7230d31b18e106400169b9e9"},
+]
+grpc-stubs = [
+    {file = "grpc-stubs-1.24.1.tar.gz", hash = "sha256:853fc62f00b6e85da42d6c1c4f73cd25d7b47c5744b0d12c84b480655e06c0c6"},
+    {file = "grpc_stubs-1.24.1-py3-none-any.whl", hash = "sha256:9701fbde644ce90db3a202c136c00aec28aa82c288a313aa5099bd066932348b"},
 ]
 grpcio = [
     {file = "grpcio-1.28.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:085bbf7fd0070b8d65e84aa32979f17cfe624d27b5ce23955ef770c19d2d9623"},
