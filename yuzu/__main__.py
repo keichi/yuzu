@@ -1,14 +1,12 @@
-import sys
 import os
 from concurrent.futures import ThreadPoolExecutor
 
 import grpc
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
 from .monitor import Monitor
-from .collector_pb2_grpc import YuzuCollectorServicer
-from .collector_pb2_grpc import add_YuzuCollectorServicer_to_server
+from .pb.collector_pb2 import TelemetryReply
+from .pb.collector_pb2_grpc import (YuzuCollectorServicer,
+                                    add_YuzuCollectorServicer_to_server)
 
 GS_DEF = {
     "name": "sim",
