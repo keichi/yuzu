@@ -30,20 +30,22 @@ PDF_DEF = {
 
 
 class CollectorServicer(YuzuCollectorServicer):
-    def ReportTimer(self, request, context):
-        pass
+    def ReportTimer(self, request, context):  # noqa: N802
+        print(f"ReportTimer called: {request}")
+        return TelemetryReply()
 
-    def ReportDataSize(self, request, context):
-        pass
+    def ReportDataSize(self, request, context):  # noqa: N802
+        print(f"ReportDataSize called {request}")
+        return TelemetryReply()
 
 
 def serve():
     server = grpc.server(ThreadPoolExecutor(max_workers=10))
-    add_YuzuCollectorServicer_to_server(YuzuCollectorServicer(), server)
+    add_YuzuCollectorServicer_to_server(CollectorServicer(), server)
 
     print("Starting gRPC server")
 
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port("[::]:50051")
     server.start()
 
 
