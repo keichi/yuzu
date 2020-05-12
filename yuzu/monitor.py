@@ -27,7 +27,7 @@ class Monitor:
 
         full_cmd = [
             "mpirun",
-            "-x", "MASTER",
+            "-x", "MASTER_ADDR",
             "-x", "APP_NAME",
             "-n", str(app.np),
             "-H", ",".join(app.hosts),
@@ -37,7 +37,7 @@ class Monitor:
         # These environment variables will be available from the app
         env = os.environ.copy()
         env["APP_NAME"] = app.name
-        env["MASTER"] = os.environ["HOSTNAME"]
+        env["MASTER_ADDR"] = os.environ["HOSTNAME"] + ":50051"
 
         print(f"Launching app {app.name}: {full_cmd}", flush=True)
 

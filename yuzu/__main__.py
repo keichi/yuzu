@@ -37,16 +37,6 @@ class CollectorServicer(YuzuCollectorServicer):
         return TelemetryReply()
 
 
-def serve():
-    server = grpc.server(ThreadPoolExecutor(max_workers=10))
-    add_YuzuCollectorServicer_to_server(CollectorServicer(), server)
-
-    print("Starting gRPC server")
-
-    server.add_insecure_port("[::]:50051")
-    server.start()
-
-
 def main() -> None:
     job_id = os.getenv("JOB_ID")
 
@@ -55,7 +45,13 @@ def main() -> None:
     master = os.getenv("HOSTNAME")
     print(f"Yuzu master is running on {master}")
 
-    serve()
+    server = grpc.server(ThreadPoolExecutor(max_workers=10))
+    add_YuzuCollectorServicer_to_server(CollectorServicer(), server)
+
+    print("Starting gRPC server")
+
+    server.add_insecure_port("[::]:50051")
+    server.start()
 
     hosts = []
     with open(os.environ["PE_HOSTFILE"]) as f:
