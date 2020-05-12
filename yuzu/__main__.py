@@ -8,7 +8,7 @@ from .pb.collector_pb2 import TelemetryReply
 from .pb.collector_pb2_grpc import (YuzuCollectorServicer,
                                     add_YuzuCollectorServicer_to_server)
 
-GS_DEF = {
+APP_DEF = [{
     "name": "sim",
     "np": 128,
     "cmd": [
@@ -16,9 +16,7 @@ GS_DEF = {
         "settings-staging.json"
     ],
     "cwd": "/work/keichi/yuzu"
-}
-
-PDF_DEF = {
+}, {
     "name": "pdf",
     "np": 16,
     "cmd": [
@@ -26,7 +24,7 @@ PDF_DEF = {
         "gs.bp", "pdf.bp"
     ],
     "cwd": "/work/keichi/yuzu"
-}
+}]
 
 
 class CollectorServicer(YuzuCollectorServicer):
@@ -77,8 +75,8 @@ def main() -> None:
     # TODO Should not hardcode master node
     monitor = Monitor(hosts[1:])
 
-    monitor.launch(GS_DEF)
-    monitor.launch(PDF_DEF)
+    for app_def in APP_DEF:
+        monitor.launch(app_def)
 
     monitor.wait()
 
