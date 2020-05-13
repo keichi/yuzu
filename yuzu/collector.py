@@ -40,7 +40,7 @@ class CollectorServicer(YuzuCollectorServicer):
         return TelemetryReply()
 
 
-def create_collector(apps):
+def create_collector(apps) -> grpc.Server:
     server = grpc.server(ThreadPoolExecutor(max_workers=10))
     add_YuzuCollectorServicer_to_server(CollectorServicer(apps),
                                         server)
@@ -48,7 +48,7 @@ def create_collector(apps):
     return server
 
 
-def start_collector(server):
+def start_collector(server: grpc.Server) -> None:
     print("Starting gRPC collector server")
 
     server.add_insecure_port("[::]:50051")
