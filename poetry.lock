@@ -190,6 +190,17 @@ version = "0.4.3"
 
 [[package]]
 category = "dev"
+description = "Generate mypy stub files from protobuf specs"
+name = "mypy-protobuf"
+optional = false
+python-versions = "*"
+version = "1.20"
+
+[package.dependencies]
+protobuf = ">=3.6.0"
+
+[[package]]
+category = "dev"
 description = "Check PEP-8 naming conventions, plugin for flake8"
 name = "pep8-naming"
 optional = false
@@ -278,7 +289,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "9b2b509d9efa68dfddceadb4fbb693738d8781ec3d946ce6d3d433fb001fba32"
+content-hash = "a7e88b3b1b0798b01377af43cbd7473af217197f892ef537c935022f14827514"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -410,6 +421,10 @@ mypy = [
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
+]
+mypy-protobuf = [
+    {file = "mypy-protobuf-1.20.tar.gz", hash = "sha256:2f0f7d81d6d32c1b2d7740f425450fda10fc3f85ef9b8729dfabb70b778a420e"},
+    {file = "mypy_protobuf-1.20-py3-none-any.whl", hash = "sha256:433bd7d544f52bf8aeab6a47b389a69419d42b02aa264ad73d05ac26534fb164"},
 ]
 pep8-naming = [
     {file = "pep8-naming-0.10.0.tar.gz", hash = "sha256:f3b4a5f9dd72b991bf7d8e2a341d2e1aa3a884a769b5aaac4f56825c1763bf3a"},
