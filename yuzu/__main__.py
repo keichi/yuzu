@@ -1,10 +1,12 @@
 import os
 from concurrent.futures import ThreadPoolExecutor
+from typing import Dict
 
 import grpc
 
+from .application import Application
 from .monitor import Monitor
-from .pb.collector_pb2 import TelemetryReply
+from .pb.collector_pb2 import TelemetryReply, TimerType
 from .pb.collector_pb2_grpc import (YuzuCollectorServicer,
                                     add_YuzuCollectorServicer_to_server)
 
@@ -17,23 +19,44 @@ APP_DEF = [{
     ],
     "cwd": "/work/keichi/yuzu"
 }, {
-    "name": "pdf",
+    "name": "iso",
     "np": 16,
     "cmd": [
-        "/work/keichi/adiosvm/Tutorial/gray-scott/pdf_calc",
-        "gs.bp", "pdf.bp"
+        "/work/keichi/adiosvm/Tutorial/gray-scott/isosurface",
+        "gs.bp", "iso.bp", "0.5"
     ],
     "cwd": "/work/keichi/yuzu"
 }]
 
 
 class CollectorServicer(YuzuCollectorServicer):
+    def __init__(self, apps: Dict[str, Application]):
+        self.apps = apps
+
     def ReportTimer(self, request, context):  # noqa: N802
-        print(f"ReportTimer called: {request}")
+
+        app_name = request.common.app_name
+
+        if app_name not in self.apps:
+            print(f"Received timer telemetry from unknown app {app_name}")
+            return TelemetryReply()
+
+        app = self.apps[app_name]
+
+        if request.timer_type == TimerType.READ_IO:
+            app.time_read[request.common.step] = request.duration
+        elif request.timer_type == TimerType.COMPUTE:
+            app.time_compute[request.common.step] = request.duration
+        elif request.timer_type == TimerType.WRITE_IO:
+            app.time_write[request.common.step] = request.duration
+        elif request.timer_type == TimerType.TOTAL:
+            app.time_total[request.common.step] = request.duration
+        else:
+            print(f"Unknown timer type {request.timer_type}")
+
         return TelemetryReply()
 
     def ReportDataSize(self, request, context):  # noqa: N802
-        print(f"ReportDataSize called {request}")
         return TelemetryReply()
 
 
@@ -44,14 +67,6 @@ def main() -> None:
 
     master = os.getenv("HOSTNAME")
     print(f"Yuzu master is running on {master}")
-
-    server = grpc.server(ThreadPoolExecutor(max_workers=10))
-    add_YuzuCollectorServicer_to_server(CollectorServicer(), server)
-
-    print("Starting gRPC server")
-
-    server.add_insecure_port("[::]:50051")
-    server.start()
 
     hosts = []
     with open(os.environ["PE_HOSTFILE"]) as f:
@@ -74,7 +89,19 @@ def main() -> None:
     for app_def in APP_DEF:
         monitor.launch(app_def)
 
+    server = grpc.server(ThreadPoolExecutor(max_workers=10))
+    add_YuzuCollectorServicer_to_server(CollectorServicer(monitor.apps),
+                                        server)
+
+    print("Starting gRPC server")
+
+    server.add_insecure_port("[::]:50051")
+    server.start()
+
     monitor.wait()
+
+    for name, app in monitor.apps.items():
+        print(name, app.time_compute)
 
     print(f"Exiting job ID {job_id}")
 

@@ -13,6 +13,7 @@ class Application:
         self.hosts: Set[str] = set()
         self.proc: Optional[subprocess.Popen] = None
 
-        self.time_read: List[float] = []
-        self.time_compute: List[float] = []
-        self.time_write: List[float] = []
+        self.time_read: Dict[int, float] = {}
+        self.time_compute: Dict[int, float] = {}
+        self.time_write: Dict[int, float] = {}
+        self.time_total: Dict[int, float] = {}
